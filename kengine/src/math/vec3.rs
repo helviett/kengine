@@ -8,6 +8,10 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
+    pub fn new(x: f32, y: f32, z: f32) -> Vec3 {
+        Vec3 { x, y, z }
+    }
+
     pub fn dot(a: Vec3, b: Vec3) -> f32 {
         a.x * b.x + a.y * b.y + a.z * b.z
     }
@@ -52,4 +56,3 @@ impl ops::Mul<Vec3> for f32 {
         Vec3 { x: self * b.x, y: self * b.y, z: self * b.z }
     }
 }
-

@@ -16,4 +16,15 @@ mod tests {
         assert_eq!(Vec3::rej(v, x), y);
         assert_eq!(Vec3::cross(x, y), z);
     }
+
+    #[test]
+    fn mat3_tests() {
+        let mat = Mat3::from_cols(
+            Vec3::new(1.0, 1.0, 1.0),
+            Vec3::new(3.0, 4.0, 5.0),
+            Vec3::new(3.0, 6.0, 10.0)
+        );
+        let inv = mat.inv();
+        assert_eq!(mat * inv, Mat3::identity());
+    }
 }
