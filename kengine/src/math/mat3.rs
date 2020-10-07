@@ -63,6 +63,143 @@ impl Mat3 {
             ],
         }
     }
+
+    pub fn rot_x(rads: f32) -> Mat3 {
+        let sin = rads.sin();
+        let cos = rads.cos();
+
+        Mat3 {
+            e: [
+                [1.0, 0.0, 0.0],
+                [0.0, cos, sin],
+                [0.0, -sin, cos],
+            ],
+        }
+    }
+
+    pub fn rot_y(rads: f32) -> Mat3 {
+        let sin = rads.sin();
+        let cos = rads.cos();
+
+        Mat3 {
+            e: [
+                [cos, 0.0, sin],
+                [0.0, 1.0, 0.0],
+                [-sin, 0.0, cos],
+            ],
+        }
+    }
+
+    pub fn rot_z(rads: f32) -> Mat3 {
+        let sin = rads.sin();
+        let cos = rads.cos();
+
+        Mat3 {
+            e: [
+                [cos, -sin, 0.0],
+                [sin, cos, 0.0],
+                [0.0, 0.0, 1.0],
+            ],
+        }
+    }
+
+    pub fn rot(rads: f32, a: Vec3) -> Mat3 {
+        let c = rads.cos();
+        let s = rads.sin();
+        let d = 1.0 - c;
+
+        let x = a.x * d;
+        let y = a.y * d;
+        let z = a.z * d;
+        let axay = x * a.y;
+        let axaz = x * a.z;
+        let ayaz = y * a.z;
+
+        Mat3 {
+            e: [
+                [c + x * a.x, axay + s * a.z, axaz - s * a.y],
+                [axay - s * a.z, c + y * a.y, ayaz + s * a.x],
+                [axaz + s * a.y, ayaz - s * a.x, c + z * a.z],
+            ],
+        }
+    }
+
+    pub fn reflect(a: Vec3) -> Mat3 {
+        let x = -2.0 * a.x;
+        let y = -2.0 * a.y;
+        let z = -2.0 * a.z;
+        let axay = x * a.y;
+        let axaz = x * a.z;
+        let ayaz = y * a.z;
+
+        Mat3 {
+            e: [
+                [x * a.x + 1.0, axay, axaz],
+                [axay, y * a.y + 1.0, ayaz],
+                [axaz, ayaz, z * a.z + 1.0],
+            ]
+        }
+    }
+
+    pub fn invol(a: Vec3) -> Mat3 {
+        let x = 2.0 * a.x;
+        let y = 2.0 * a.y;
+        let z = 2.0 * a.z;
+        let axay = x * a.y;
+        let axaz = x * a.z;
+        let ayaz = y * a.z;
+
+        Mat3 {
+            e: [
+                [x * a.x - 1.0, axay, axaz],
+                [axay, y * a.y - 1.0, ayaz],
+                [axaz, ayaz, z * a.z - 1.0],
+            ]
+        }
+    }
+
+    pub fn scale(sx: f32, sy: f32, sz:f32) -> Mat3 {
+        Mat3 {
+            e: [
+                [sx, 0.0, 0.0],
+                [0.0, sy, 0.0],
+                [0.0, 0.0, sz],
+            ]
+        }
+    }
+
+    pub fn scale_along_dir(s: f32, a: Vec3) -> Mat3 {
+        let s = s - 1.0;
+        let x = a.x * s;
+        let y = a.y * s;
+        let z = a.z * s;
+        let axay = x * a.y;
+        let axaz = x * a.z;
+        let ayaz = y * a.z;
+
+        Mat3 {
+            e: [
+                [x * a.x + 1.0, axay, axaz],
+                [axay, y * a.y + 1.0, ayaz],
+                [axaz, ayaz, z * a.z + 1.0],
+            ]
+        }
+    }
+
+    pub fn skew(t: f32, a: Vec3, b: Vec3) -> Mat3 {
+        let t = t.tan();
+        let x = a.x * t;
+        let y = a.y * t;
+        let z = a.z * t;
+
+        Mat3 {
+            e: [
+                [x * b.x + 1.0, y * b.x, z * b.x],
+                [x * b.y, y * b.y + 1.0, z * b.y],
+                [x * b.z, y * b.z, z * b.z + 1.0],
+            ]
+        }
+    }
 }
 
 impl ops::Add for Mat3 {
