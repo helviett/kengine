@@ -37,11 +37,20 @@ mod tests {
         assert!(vec3_approx_eq(Mat3::rot(PI / 2.0, Vec3::z_axis()) * Vec3::x_axis(), Vec3::y_axis(), eps));
         assert!(vec3_approx_eq(Mat3::rot(PI / 2.0, Vec3::y_axis()) * Vec3::z_axis(), Vec3::x_axis(), eps));
         assert!(vec3_approx_eq(Mat3::rot_y(PI / 2.0) * Mat3::rot_x(PI / 2.0) * Vec3::y_axis(), Vec3::x_axis(), eps));
+        assert!(vec3_approx_eq((Mat3::rot_y(PI / 2.0) * Mat3::rot_x(PI / 2.0)).inv() * Vec3::x_axis(), Vec3::y_axis(), eps));
         assert!(vec3_approx_eq(Mat3::reflect(Vec3::x_axis()) * Vec3::new(1.0, 1.0, 0.0), Vec3::new(-1.0, 1.0, 0.0), eps));
         assert!(vec3_approx_eq(Mat3::invol(Vec3::x_axis()) * Vec3::new(1.0, 1.0, 0.0), Vec3::new(1.0, -1.0, 0.0), eps));
         assert!(vec3_approx_eq(Mat3::scale(2.0, 2.0, 2.0) * Vec3::new(0.5, 0.5, 0.5), Vec3::one(), eps));
         assert!(vec3_approx_eq(Mat3::scale_along_dir(2.0, Vec3::x_axis()) * Vec3::one(), Vec3::new(2.0, 1.0, 1.0), eps));
         assert!(vec3_approx_eq(Mat3::skew(PI / 4.0, Vec3::x_axis(), Vec3::y_axis()) * Vec3::y_axis(), Vec3::new(1.0, 1.0, 0.0), eps));
+    }
+
+    #[test]
+    fn transform4d_tests() {
+        let eps = 1e-4;
+        let transform = Transform4D::from_mat_vec(Mat3::rot_y(PI / 2.0) * Mat3::rot_x(PI / 2.0), Vec3::x_axis());
+        assert!(vec3_approx_eq(transform * Vec3::y_axis(), 2.0 * Vec3::x_axis(), eps));
+        assert!(vec3_approx_eq(transform.inv() * (2.0 * Vec3::x_axis()), Vec3::y_axis(), eps));
     }
 
     fn vec3_approx_eq(a: Vec3, b: Vec3, eps: f32) -> bool {

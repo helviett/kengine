@@ -83,8 +83,16 @@ impl ops::Mul<Vec3> for f32 {
 impl ops::Index<usize> for Vec3 {
     type Output = f32;
 
-    fn index(&self, i: usize) -> &f32 { 
+    fn index(&self, i: usize) -> &f32 {
         &self.as_ref()[i]
+    }
+}
+
+impl ops::Neg for Vec3 {
+    type Output = Vec3;
+
+    fn neg(self) -> Vec3 {
+        Vec3::new(-self.x, -self.y, -self.z)
     }
 }
 
