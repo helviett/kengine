@@ -7,6 +7,18 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "Cargo launch",
+            "cargo": {
+                "args": [
+                    "build",
+                ]
+            },
+            "program": "${cargo:program}",
+            "args": []
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Debug unit tests in library 'kengine'",
             "cargo": {
                 "args": [
